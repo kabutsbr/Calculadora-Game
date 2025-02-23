@@ -3,37 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Barras</title>
+    <title>Calculadora Dupla</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 300px; margin: auto; padding: 20px; border: 2px solid #333; border-radius: 10px; background: #f3f3f3; }
-        .slider-container { margin-bottom: 20px; }
-        input[type=range] { width: 100%; }
-        .result { font-size: 24px; font-weight: bold; margin-top: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+        .calculator-container {
+            padding: 20px;
+            border: 3px solid black;
+            border-radius: 15px;
+            background: #fff9c4;
+            width: 45%;
+            transition: background 0.3s;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 22px; /* Aumentei o tamanho dos números e emojis */
+        }
+        .slider {
+            width: 75%;
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            outline: none;
+            transition: 0.2s;
+            border: 2px solid black; /* Contorno preto na barra total */
+        }
+
+        /* Estilização das cores das barras dos sliders */
+        #pot1, #pot2 { background: #2196F3; } /* Azul */
+        #pot1::-webkit-slider-thumb, #pot2::-webkit-slider-thumb { background: #2196F3; }
+        
+        #pil1, #pil2 { background: #9C27B0; } /* Roxo */
+        #pil1::-webkit-slider-thumb, #pil2::-webkit-slider-thumb { background: #9C27B0; }
+        
+        #mais1, #mais2 { background: #4CAF50; } /* Verde */
+        #mais1::-webkit-slider-thumb, #mais2::-webkit-slider-thumb { background: #4CAF50; }
+        
+        #menos1, #menos2 { background: #F44336; } /* Vermelho */
+        #menos1::-webkit-slider-thumb, #menos2::-webkit-slider-thumb { background: #F44336; }
+
+        .resultado {
+            background: black;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bonus-button, .reset-button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+        }
+        .bonus-button { background: lightblue; }
+        .reset-button { background: red; color: white; }
     </style>
 </head>
 <body>
+    <h1>Calculadora Dupla</h1>
     <div class="container">
-        <div class="slider-container">
-            <label for="potencia">POTÊNCIA: <span id="potenciaValue">1</span></label>
-            <input type="range" id="potencia" min="1" max="9" value="1" oninput="calcular()">
+        <div class="calculator-container" id="calc1">
+            <h2>Jogador 1</h2>
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="1" class="slider" id="pot1">
+                <span id="pot-value1">⚡ 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="pil1">
+                <span id="pil-value1">💊 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="mais1">
+                <span id="mais-value1">➕ 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="menos1">
+                <span id="menos-value1">➖ 1</span>
+            </div>
+            <button class="resultado" id="resultado1">👊 1</button>
+            <button class="bonus-button" id="bonus1">🎲</button>
         </div>
-        <div class="slider-container">
-            <label for="pilula">PÍLULA: <span id="pilulaValue">1</span></label>
-            <input type="range" id="pilula" min="1" max="15" value="1" oninput="calcular()">
+
+        <div class="calculator-container" id="calc2">
+            <h2>Jogador 2</h2>
+            <div class="slider-container">
+                <input type="range" min="1" max="10" value="1" class="slider" id="pot2">
+                <span id="pot-value2">⚡ 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="pil2">
+                <span id="pil-value2">💊 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="mais2">
+                <span id="mais-value2">➕ 1</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="1" max="15" value="1" class="slider" id="menos2">
+                <span id="menos-value2">➖ 1</span>
+            </div>
+            <button class="resultado" id="resultado2">👊 1</button>
+            <button class="bonus-button" id="bonus2">🎲</button>
         </div>
-        <div class="result">TOTAL: <span id="total">1</span></div>
     </div>
+    <h2 id="winner">Aguardando resultado...</h2>
+    <button class="reset-button" id="reset">🔄 Resetar</button>
 
     <script>
-        function calcular() {
-            let potencia = document.getElementById("potencia").value;
-            let pilula = document.getElementById("pilula").value;
-            
-            document.getElementById("potenciaValue").innerText = potencia;
-            document.getElementById("pilulaValue").innerText = pilula;
-            document.getElementById("total").innerText = potencia * pilula;
+        let bonusUsos = {1: 0, 2: 0};
+
+        function calcularResultado(jogador) {
+            let pot = parseInt(document.getElementById(`pot${jogador}`).value);
+            let pil = parseInt(document.getElementById(`pil${jogador}`).value);
+            let mais = parseInt(document.getElementById(`mais${jogador}`).value);
+            let menos = parseInt(document.getElementById(`menos${jogador}`).value);
+
+            let resultado = (pot * pil) + mais - menos;
+            document.getElementById(`resultado${jogador}`).innerText = `👊 ${resultado}`;
+
+            document.getElementById(`pot-value${jogador}`).innerText = `⚡ ${pot}`;
+            document.getElementById(`pil-value${jogador}`).innerText = `💊 ${pil}`;
+            document.getElementById(`mais-value${jogador}`).innerText = `➕ ${mais}`;
+            document.getElementById(`menos-value${jogador}`).innerText = `➖ ${menos}`;
+
+            determinarVencedor();
         }
+
+        function determinarVencedor() {
+            let res1 = parseInt(document.getElementById("resultado1").innerText.replace("👊", ""));
+            let res2 = parseInt(document.getElementById("resultado2").innerText.replace("👊", ""));
+            let winnerText = "Empate!";
+
+            if (res1 > res2) {
+                winnerText = "Jogador 1 venceu!";
+            } else if (res2 > res1) {
+                winnerText = "Jogador 2 venceu!";
+            }
+
+            document.getElementById("winner").innerText = winnerText;
+        }
+
+        document.querySelectorAll(".slider").forEach(slider => {
+            slider.addEventListener("input", event => calcularResultado(event.target.id.slice(-1)));
+        });
+
+        document.querySelectorAll(".bonus-button").forEach(button => {
+            button.addEventListener("click", event => {
+                let jogador = event.target.id.slice(-1);
+                if (bonusUsos[jogador] < 3) {
+                    let bonus = Math.floor(Math.random() * 9) + 1;
+                    let resultadoAtual = parseInt(document.getElementById(`resultado${jogador}`).innerText.replace("👊", ""));
+                    document.getElementById(`resultado${jogador}`).innerText = `👊 ${resultadoAtual + bonus}`;
+                    bonusUsos[jogador]++;
+                    determinarVencedor();
+                }
+            });
+        });
+
+        document.getElementById("reset").addEventListener("click", () => location.reload());
     </script>
 </body>
 </html>
