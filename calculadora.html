@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Barras</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .container { max-width: 300px; margin: auto; padding: 20px; border: 2px solid #333; border-radius: 10px; background: #f3f3f3; }
+        .slider-container { margin-bottom: 20px; }
+        input[type=range] { width: 100%; }
+        .result { font-size: 24px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slider-container">
+            <label for="potencia">POTÊNCIA: <span id="potenciaValue">1</span></label>
+            <input type="range" id="potencia" min="1" max="9" value="1" oninput="calcular()">
+        </div>
+        <div class="slider-container">
+            <label for="pilula">PÍLULA: <span id="pilulaValue">1</span></label>
+            <input type="range" id="pilula" min="1" max="15" value="1" oninput="calcular()">
+        </div>
+        <div class="result">TOTAL: <span id="total">1</span></div>
+    </div>
+
+    <script>
+        function calcular() {
+            let potencia = document.getElementById("potencia").value;
+            let pilula = document.getElementById("pilula").value;
+            
+            document.getElementById("potenciaValue").innerText = potencia;
+            document.getElementById("pilulaValue").innerText = pilula;
+            document.getElementById("total").innerText = potencia * pilula;
+        }
+    </script>
+</body>
+</html>
